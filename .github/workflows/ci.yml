@@ -54,4 +54,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Deploy tested commit
-        run: railway up --service day12-agent --detach
+        run: >-
+          railway up
+          --project e6e51307-a2ce-4cb7-8062-a193d414710c
+          --environment b93bc8d9-1432-4e9b-b7cd-11fc1b8be46d
+          --service day12-agent
+          --ci
