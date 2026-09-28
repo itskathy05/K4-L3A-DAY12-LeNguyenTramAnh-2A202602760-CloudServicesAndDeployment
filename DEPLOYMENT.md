@@ -10,17 +10,17 @@
 
 | Mục | Nội dung |
 |-----|----------|
-| Họ và tên | (điền họ tên) |
-| Mã học viên | (điền mã học viên) |
-| Repo | (điền link repo K4-L3A-DAY12-HoVaTen-MSSV-CloudServicesAndDeployment) |
+| Họ và tên | Lê Nguyễn Trâm Anh |
+| Mã học viên | 2A202602760 |
+| Repo | https://github.com/itskathy05/K4-L3A-DAY12-LeNguyenTramAnh-2A202602760-CloudServicesAndDeployment |
 
 ## Service
 
 | Mục | Nội dung |
 |-----|----------|
-| Public URL | https://TODO-thay-bang-url-that.up.railway.app |
-| Platform | Railway / Render / Cloud Run — (điền platform bạn dùng) |
-| Ngày deploy | (điền ngày) |
+| Public URL | https://day12-agent-production-4b38.up.railway.app |
+| Platform | Railway |
+| Ngày deploy | 2026-09-28 |
 
 ## Biến Môi Trường Đã Set Trên Cloud
 
@@ -30,10 +30,11 @@ Ghi tên biến và **nguồn giá trị**, không ghi giá trị:
 |------|--------|---------|
 | `PORT` | ✅ | platform tự gán |
 | `AGENT_API_KEY` | ✅ | đặt trong dashboard, không nằm trong repo |
-| `REDIS_URL` | ✅ | (điền: Redis add-on của platform / Upstash / ...) |
+| `REDIS_URL` | ✅ | Railway Redis service qua reference variable |
 | `RATE_LIMIT_PER_MINUTE` | ✅ | 10 |
 | `MONTHLY_BUDGET_USD` | ✅ | 10.0 |
 | `LOG_LEVEL` | ✅ | INFO |
+| `RAILWAY_DEPLOYMENT_DRAINING_SECONDS` | ✅ | 30 giây |
 
 ## Lệnh Kiểm Tra
 
@@ -73,7 +74,24 @@ done; echo
 Dán output của các lệnh trên vào đây:
 
 ```
-(điền output)
+GET /health
+HTTP 200
+{"status":"ok","service":"day12-agent","version":"1.0.0"}
+
+GET /ready
+HTTP 200
+{"status":"ready","redis":true}
+
+POST /ask không có X-API-Key
+HTTP 401
+{"detail":"invalid or missing API key"}
+
+POST /ask có X-API-Key và X-User-Id
+HTTP 200
+response có answer, user_id, history_length, cost_usd và tokens
+
+15 lần gọi với user rate-limit riêng
+200 200 200 200 200 200 200 200 200 200 429 429 429 429 429
 ```
 
 ## Ảnh Chụp Màn Hình
@@ -97,5 +115,5 @@ Không đăng ký được tài khoản cloud? Vẫn nộp được bài, nhưng
 5. Ghi rõ lý do không deploy được vào phần dưới đây:
 
 ```
-(điền lý do nếu dùng phương án dự phòng, ngược lại xóa mục này)
+Không sử dụng phương án dự phòng; service đã deploy thành công trên Railway.
 ```

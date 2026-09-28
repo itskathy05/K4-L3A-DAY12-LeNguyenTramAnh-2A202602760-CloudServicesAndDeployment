@@ -152,4 +152,10 @@ Ghi lại **một** lỗi bạn gặp khi deploy lên cloud (build fail, health 
 timeout, sai REDIS_URL, app không đọc `$PORT`...): thông báo lỗi là gì, bạn
 tìm ra nguyên nhân bằng cách nào, và sửa ra sao?
 
-> *Câu trả lời của bạn*
+> Lần deploy tự động đầu tiên trên Railway bị `CRASHED`. Deploy log báo
+> `ValidationError: agent_api_key - Field required`, trong khi input chỉ có `port=8080`.
+> Tôi đọc traceback và thấy lỗi phát sinh từ `get_settings()` trong lifespan,
+> nên xác định service được tạo và deploy trước khi biến bí mật được áp dụng.
+> Tôi đặt `AGENT_API_KEY` bằng Railway variable qua stdin, thêm `REDIS_URL` dạng
+> reference tới Redis service, sau đó redeploy cùng commit. Lần deploy sau có trạng
+> thái `SUCCESS`; `/health` và `/ready` đều trả 200.
