@@ -15,9 +15,10 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 from functools import lru_cache
+from pathlib import Path
 
 from fastapi import Depends, FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, Field
 
 from utils.mock_llm import ask_llm
@@ -66,6 +67,13 @@ async def lifespan(_app: FastAPI):
 
 
 app = FastAPI(title="Day 12 Production Agent", version=SERVICE_VERSION, lifespan=lifespan)
+
+
+@app.get("/demo", include_in_schema=False)
+def demo_ui():
+    """Serve the self-contained lab demo UI from the same origin as the API."""
+    ui_path = Path(__file__).resolve().parents[1] / "web" / "index.html"
+    return FileResponse(ui_path, media_type="text/html; charset=utf-8")
 
 
 class AskRequest(BaseModel):

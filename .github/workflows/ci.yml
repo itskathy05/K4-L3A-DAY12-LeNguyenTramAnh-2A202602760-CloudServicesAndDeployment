@@ -60,3 +60,4 @@ jobs:
         run: |
           sleep 45
           curl -fsS "https://day12-agent-production-4b38.up.railway.app/health"
+          curl -fsS "https://day12-agent-production-4b38.up.railway.app/demo" | grep -q "API playground"

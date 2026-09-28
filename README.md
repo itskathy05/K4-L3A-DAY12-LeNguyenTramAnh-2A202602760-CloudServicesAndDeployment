@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/itskathy05/K4-L3A-DAY12-LeNguyenTramAnh-2A202602760-CloudServicesAndDeployment/actions/workflows/ci.yml/badge.svg)](https://github.com/itskathy05/K4-L3A-DAY12-LeNguyenTramAnh-2A202602760-CloudServicesAndDeployment/actions/workflows/ci.yml)
 
+Demo UI: [mở trên Railway](https://day12-agent-production-4b38.up.railway.app/demo) sau khi workflow deploy phiên bản giao diện mới; chạy local thì mở `/demo`.
+
 Đưa một AI agent từ `localhost:8000` lên một địa chỉ công khai mà người khác
 gọi được, có bảo mật, có giới hạn chi phí, và không sập khi bạn deploy bản mới.
 

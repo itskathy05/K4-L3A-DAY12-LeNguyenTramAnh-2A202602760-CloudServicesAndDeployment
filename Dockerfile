@@ -23,6 +23,7 @@ WORKDIR /app
 COPY --from=builder /install /usr/local
 COPY --chown=app:app app ./app
 COPY --chown=app:app utils ./utils
+COPY --chown=app:app web ./web
 
 USER app
 

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a101b">
+  <title>Day 12 Agent — Demo Console</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0a101b;--surface:#101a29;--surface-2:#142236;--line:#26364d;--text:#eff5ff;--muted:#9aabc3;--mint:#68e0bd;--blue:#8db8ff;--amber:#ffc979;--red:#ff8794;--shadow:0 18px 50px #0003}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 500px at 78% -10%,#173149 0,transparent 68%),var(--bg);color:var(--text);font:15px/1.5 Inter,"Segoe UI",Arial,sans-serif;min-height:100vh}
+    button,input,textarea{font:inherit}button{cursor:pointer}.shell{max-width:1360px;margin:auto;padding:22px 28px 48px}.nav{display:flex;align-items:center;justify-content:space-between;padding-bottom:25px;border-bottom:1px solid #263246}.brand{display:flex;align-items:center;gap:11px;font-weight:750;letter-spacing:.01em}.logo{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#75e8ca,#58a8e4);color:#08141c;font-weight:900;font-size:17px}.nav-right{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}.live-dot{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 12px currentColor}.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;padding:30px 0 22px}.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mint);font-weight:800}.hero h1{font-size:clamp(30px,4vw,45px);line-height:1.08;letter-spacing:-.045em;margin:8px 0}.hero p{color:var(--muted);margin:0;max-width:680px}.hero-actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#142236;color:var(--text);border-radius:10px;padding:10px 14px;font-weight:650;transition:.18s}.btn:hover{border-color:#4b7399;transform:translateY(-1px)}.btn.primary{background:linear-gradient(135deg,#74e7c4,#79c5fa);border:0;color:#0b1821}.btn.subtle{background:transparent}.btn.warn{color:#ffd9a2;border-color:#665033}.btn:disabled{opacity:.5;cursor:wait;transform:none}
+    .grid{display:grid;gap:14px}.health-grid{grid-template-columns:repeat(3,1fr);margin:8px 0 15px}.card{border:1px solid var(--line);border-radius:16px;background:linear-gradient(160deg,#121e2e,#0f1927);box-shadow:var(--shadow)}.health-card{padding:16px 18px;min-height:108px}.card-label{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}.card-value{display:flex;align-items:center;gap:9px;margin-top:10px;font-size:18px;font-weight:750}.state{font-size:12px;padding:3px 9px;border-radius:99px;background:#192c34;color:var(--mint)}.state.wait{background:#302719;color:var(--amber)}.state.bad{background:#351d28;color:var(--red)}.card-note{font-size:12px;color:var(--muted);margin-top:3px}
+    .main-grid{grid-template-columns:minmax(0,1.62fr) minmax(320px,.95fr);align-items:start}.panel{padding:20px}.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:17px}.panel h2{font-size:17px;margin:0;letter-spacing:-.02em}.panel-desc{font-size:12px;color:var(--muted);margin:4px 0 0}.tag{font-size:11px;border:1px solid #31504c;color:var(--mint);background:#102722;border-radius:99px;padding:4px 8px;white-space:nowrap}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:#bac8dc;font-weight:700}.field input,.field textarea{border:1px solid #2b3d55;border-radius:9px;background:#0b1421;color:var(--text);outline:0;padding:10px 12px;width:100%}.field input:focus,.field textarea:focus{border-color:#5faeab;box-shadow:0 0 0 3px #68e0bd18}.field textarea{min-height:84px;resize:vertical}.input-with-action{display:flex;gap:7px}.input-with-action input{flex:1}.icon-btn{border:1px solid var(--line);background:#172437;color:var(--muted);border-radius:9px;padding:0 10px}.helper{font-size:11px;color:#8294ad}.form-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.response{margin-top:18px;border:1px solid #29384e;border-radius:12px;overflow:hidden;background:#0b1421}.response-top{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #29384e;color:var(--muted);font-size:12px}.response-content{padding:13px;min-height:90px}.empty{color:#71839c;font-size:13px}.answer{font-size:14px;white-space:pre-wrap;margin:0 0 12px}.metrics{display:flex;gap:7px;flex-wrap:wrap}.metric{padding:5px 8px;border-radius:7px;background:#14243a;color:#bfd5f1;font-size:11px}.raw{border-top:1px solid #26364d;margin-top:12px;padding-top:10px}.raw summary{color:var(--muted);font-size:11px;cursor:pointer}.raw pre,.event-list pre{margin:8px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;color:#bce9d9;font:11px/1.5 ui-monospace,Consolas,monospace}
+    .side-stack{display:grid;gap:14px}.flow{display:grid;gap:7px}.flow-row{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;background:#0d1725;color:#c6d3e6;font-size:12px}.flow-row span{display:grid;place-items:center;width:21px;height:21px;border-radius:7px;background:#19334a;color:var(--mint);font-size:10px;font-weight:800}.flow-arrow{text-align:center;color:#607895;font-size:11px;line-height:8px}.limit-box{margin-top:14px;padding:12px;border:1px solid #35435a;border-radius:11px;background:#101b2b}.limit-top{display:flex;justify-content:space-between;align-items:center;gap:8px}.limit-top b{font-size:13px}.limit-number{color:var(--amber);font-weight:800;font-size:12px}.limit-box p{margin:5px 0 10px;color:var(--muted);font-size:11px}.small{font-size:11px;padding:8px 10px}.cost-display{display:flex;align-items:baseline;gap:8px;margin:12px 0}.cost-display strong{font-size:26px;color:var(--mint);letter-spacing:-.04em}.cost-display span{font-size:11px;color:var(--muted)}.budget-line{height:6px;background:#26364a;border-radius:99px;overflow:hidden}.budget-line i{display:block;width:0;height:100%;background:linear-gradient(90deg,#69e0bc,#93c7ff);border-radius:inherit;transition:width .3s}.note{margin-top:11px;padding:10px 11px;border:1px solid #53432e;border-radius:9px;background:#241e15;color:#e6c998;font-size:11px}.sim-result{margin-top:10px;border-radius:9px;background:#271c27;border:1px solid #50334a;padding:10px;color:#ffc6d6;font:11px/1.5 ui-monospace,Consolas,monospace;display:none}.activity{margin-top:14px}.event-list{display:grid;gap:8px;max-height:210px;overflow:auto}.event{padding:9px 10px;border-radius:9px;background:#0c1522;border:1px solid #223147}.event-title{display:flex;justify-content:space-between;color:#c5d4e8;font-size:11px}.event-title time{color:#7688a2}.event-detail{color:#8294ac;font-size:11px;margin-top:3px}.foot{color:#667a95;font-size:11px;text-align:center;margin-top:20px}.foot a{color:#93b8df;text-decoration:none}
+    @media(max-width:930px){.main-grid{grid-template-columns:1fr}.side-stack{grid-template-columns:1fr 1fr}.side-stack .activity{grid-column:1/-1}.hero{align-items:flex-start;flex-direction:column}.hero-actions{width:100%}}
+    @media(max-width:620px){.shell{padding:16px 14px 32px}.nav{align-items:flex-start}.nav-right{font-size:11px}.health-grid{grid-template-columns:1fr}.health-card{min-height:0}.side-stack{grid-template-columns:1fr}.side-stack .activity{grid-column:auto}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.panel{padding:15px}.hero{padding-top:24px}.hero-actions .btn{flex:1}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="nav">
+      <div class="brand"><div class="logo">D12</div><div>Cloud Agent <span style="color:#71839b;font-weight:500">/ Demo Console</span></div></div>
+      <div class="nav-right"><span class="live-dot" id="nav-dot"></span><span id="nav-status">Đang kiểm tra dịch vụ</span><span>·</span><span>FastAPI + Redis</span></div>
+    </header>
+
+    <section class="hero">
+      <div><div class="eyebrow">K4 · Level 3A · Day 12</div><h1>Cloud Services<br>in action.</h1><p>Bảng demo trực tiếp cho API agent: probe trạng thái, xác thực, hội thoại Redis, sliding-window rate limit và cost guard.</p></div>
+      <div class="hero-actions"><button class="btn subtle" id="refresh-btn">↻ Làm mới trạng thái</button><a class="btn subtle" href="/docs" target="_blank" rel="noopener">Mở Swagger UI ↗</a></div>
+    </section>
+
+    <section class="grid health-grid" aria-label="Service status">
+      <article class="card health-card"><div class="card-label"><span>Liveness · /health</span><span id="health-code">—</span></div><div class="card-value"><span class="live-dot" id="health-dot"></span><span id="health-state">Đang kiểm tra</span><span class="state wait" id="health-pill">WAIT</span></div><div class="card-note" id="health-note">Xác nhận tiến trình ứng dụng còn sống</div></article>
+      <article class="card health-card"><div class="card-label"><span>Readiness · /ready</span><span id="ready-code">—</span></div><div class="card-value"><span class="live-dot" id="ready-dot"></span><span id="ready-state">Đang kiểm tra</span><span class="state wait" id="ready-pill">WAIT</span></div><div class="card-note" id="ready-note">Kiểm tra dependency Redis</div></article>
+      <article class="card health-card"><div class="card-label"><span>Deployment</span><span class="tag">RAILWAY · HTTPS</span></div><div class="card-value" style="font-size:15px">day12-agent</div><div class="card-note" id="service-url">Đang tải địa chỉ dịch vụ…</div></article>
+    </section>
+
+    <main class="grid main-grid">
+      <section class="card panel">
+        <div class="panel-head"><div><h2>API playground</h2><p class="panel-desc">Gửi request thật tới API. API key chỉ được giữ trong trang hiện tại, không lưu lại.</p></div><span class="tag">POST /ask</span></div>
+        <div class="form-grid">
+          <div class="field full"><label for="api-base">API base URL</label><input id="api-base" type="url" spellcheck="false"></div>
+          <div class="field full"><label for="api-key">X-API-Key <span style="color:#71839b;font-weight:400">(để trống để demo 401)</span></label><div class="input-with-action"><input id="api-key" type="password" autocomplete="off" placeholder="Nhập key Railway khi muốn demo request hợp lệ"><button class="icon-btn" id="toggle-key" type="button" aria-label="Hiện hoặc ẩn API key">Hiện</button></div><div class="helper">Không lưu vào localStorage; xóa nội dung trước khi chia sẻ màn hình.</div></div>
+          <div class="field"><label for="user-id">X-User-Id</label><input id="user-id" value="sv-demo" maxlength="80"></div>
+          <div class="field"><label for="question">Câu hỏi</label><input id="question" value="Xin chào, hãy giải thích readiness check." maxlength="2000"></div>
+        </div>
+        <div class="form-actions"><button class="btn primary" id="ask-btn">Gửi request có xác thực →</button><button class="btn" id="unauth-btn">Demo thiếu API key · 401</button></div>
+        <div class="response" aria-live="polite"><div class="response-top"><span>API response</span><span id="response-meta">Chưa gửi request</span></div><div class="response-content" id="response-content"><div class="empty">Response sẽ xuất hiện ở đây. Hãy thử request 401 rồi gửi lại với API key.</div></div></div>
+      </section>
+
+      <aside class="side-stack">
+        <section class="card panel">
+          <div class="panel-head"><div><h2>Request pipeline</h2><p class="panel-desc">Thứ tự xử lý của POST /ask</p></div><span class="tag">CP3 / CP4</span></div>
+          <div class="flow">
+            <div class="flow-row"><span>01</span> Xác thực API key</div><div class="flow-arrow">↓</div>
+            <div class="flow-row"><span>02</span> Rate limit · Redis sorted set</div><div class="flow-arrow">↓</div>
+            <div class="flow-row"><span>03</span> Kiểm tra ngân sách tháng</div><div class="flow-arrow">↓</div>
+            <div class="flow-row"><span>04</span> Đọc history → mock LLM</div><div class="flow-arrow">↓</div>
+            <div class="flow-row"><span>05</span> Lưu hội thoại + log JSON</div>
+          </div>
+          <div class="limit-box"><div class="limit-top"><b>Sliding window</b><span class="limit-number">10 request / 60 giây</span></div><p>Test thật bằng user riêng để các request demo không ảnh hưởng history chính.</p><button class="btn warn small" id="rate-btn">Chạy demo rate limit · 12 request</button></div>
+        </section>
+
+        <section class="card panel">
+          <div class="panel-head"><div><h2>Cost guard</h2><p class="panel-desc">Ngân sách cấu hình · 10 USD / user / tháng</p></div><span class="tag">CP3</span></div>
+          <div class="card-label"><span>Chi phí request gần nhất</span><span id="cost-user">Chưa có</span></div>
+          <div class="cost-display"><strong id="last-cost">—</strong><span>USD · mock LLM</span></div>
+          <div class="budget-line"><i id="budget-progress"></i></div>
+          <div class="note">API hiện không cung cấp endpoint đọc tổng chi tiêu user. Thanh tiến độ chỉ minh họa chi phí của lượt gần nhất, không phải tổng ngân sách đã dùng.</div>
+          <button class="btn small" id="simulate-cost-btn" style="margin-top:10px">Xem tình huống 402 · mô phỏng</button>
+          <div class="sim-result" id="sim-result">MÔ PHỎNG TRÊN TRÌNH DUYỆT — không gửi request tới production, không thay đổi Redis/ngân sách.<br>HTTP 402 · monthly budget exceeded<br>{"detail":"monthly budget exceeded"}</div>
+        </section>
+
+        <section class="card panel activity">
+          <div class="panel-head"><div><h2>Hoạt động phiên demo</h2><p class="panel-desc">Nhật ký phía trình duyệt, không phải log server</p></div><button class="btn subtle small" id="clear-log">Xóa</button></div>
+          <div class="event-list" id="event-list"><div class="empty">Chưa có hoạt động.</div></div>
+        </section>
+      </aside>
+    </main>
+    <footer class="foot">Demo Console · API key không được lưu · <a href="/docs">OpenAPI docs</a></footer>
+  </div>
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+      const defaultBase = location.protocol === 'http:' || location.protocol === 'https:' ? location.origin : 'https://day12-agent-production-4b38.up.railway.app';
+      $('api-base').value = defaultBase;
+      $('service-url').textContent = defaultBase;
+      const trimBase = () => $('api-base').value.trim().replace(/\/+$/, '');
+      const events = [];
+      let lastSuccessfulCost = null;
+      const escapeHtml = (value) => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+      const timestamp = () => new Intl.DateTimeFormat('vi-VN', {hour:'2-digit', minute:'2-digit', second:'2-digit'}).format(new Date());
+      function addEvent(title, detail, tone='') {
+        events.unshift({title, detail, time:timestamp(), tone});
+        events.splice(8);
+        $('event-list').innerHTML = events.length ? events.map(e => `<div class="event"><div class="event-title"><span>${escapeHtml(e.title)}</span><time>${escapeHtml(e.time)}</time></div><div class="event-detail">${escapeHtml(e.detail)}</div></div>`).join('') : '<div class="empty">Chưa có hoạt động.</div>';
+      }
+      function setPill(id, label, type) {
+        const pill=$(id); pill.textContent=label; pill.className='state '+(type==='ok'?'':type==='bad'?'bad':'wait');
+      }
+      async function getJson(path) {
+        const started=performance.now();
+        const response=await fetch(`${trimBase()}${path}`, {headers:{'Accept':'application/json'}, cache:'no-store'});
+        const elapsed=Math.round(performance.now()-started);
+        const text=await response.text(); let body;
+        try{body=JSON.parse(text)}catch{body={detail:text.slice(0,300)}}
+        return {response, body, elapsed};
+      }
+      async function refreshHealth() {
+        $('service-url').textContent=trimBase();
+        const checks=[['/health','health'],['/ready','ready']];
+        await Promise.all(checks.map(async ([path,name])=>{
+          const statusId=name+'-state', codeId=name+'-code', pillId=name+'-pill', dotId=name+'-dot', noteId=name+'-note';
+          try {
+            const {response,body,elapsed}=await getJson(path);
+            const ok=response.ok && (name!=='ready' || body.redis===true);
+            $(statusId).textContent=ok?(name==='ready'?'Sẵn sàng · Redis kết nối':'Ứng dụng đang sống'):'Không sẵn sàng';
+            $(codeId).textContent=`HTTP ${response.status} · ${elapsed} ms`;
+            $(noteId).textContent=name==='health'?'Liveness không phụ thuộc Redis':`Redis: ${body.redis===true?'connected':'unavailable'}`;
+            $(dotId).style.background=ok?'var(--mint)':'var(--red)';
+            setPill(pillId,ok?'PASS':'FAIL',ok?'ok':'bad');
+          } catch(err) {
+            $(statusId).textContent='Không kết nối được'; $(codeId).textContent='Network error'; $(noteId).textContent=err.message;
+            $(dotId).style.background='var(--red)'; setPill(pillId,'ERROR','bad');
+          }
+        }));
+        const ok=$('health-pill').textContent==='PASS' && $('ready-pill').textContent==='PASS';
+        $('nav-status').textContent=ok?'Service healthy':'Kiểm tra service'; $('nav-dot').style.background=ok?'var(--mint)':'var(--amber)';
+      }
+      function showResponse(status, elapsed, body, answer='') {
+        $('response-meta').innerHTML=`<span class="state ${status>=400?'bad':''}">HTTP ${status}</span> &nbsp; ${elapsed} ms`;
+        const metrics=[];
+        if(body && typeof body==='object') {
+          if(body.user_id) metrics.push(`user_id: ${body.user_id}`);
+          if(Number.isFinite(body.history_length)) metrics.push(`history trước lượt này: ${body.history_length}`);
+          if(Number.isFinite(body.cost_usd)) metrics.push(`cost: $${body.cost_usd}`);
+          if(body.tokens) metrics.push(`tokens: ${body.tokens.in} in / ${body.tokens.out} out`);
+        }
+        $('response-content').innerHTML=`${answer?`<p class="answer">${escapeHtml(answer)}</p>`:''}${metrics.length?`<div class="metrics">${metrics.map(m=>`<span class="metric">${escapeHtml(m)}</span>`).join('')}</div>`:''}<details class="raw"><summary>Xem JSON response</summary><pre>${escapeHtml(JSON.stringify(body,null,2))}</pre></details>`;
+      }
+      async function ask({authenticated=true, userId=$('user-id').value.trim(), question=$('question').value.trim(), quiet=false}={}) {
+        if(!question){if(!quiet)alert('Nhập câu hỏi trước khi gửi.');return {status:0,body:{detail:'question is required'}}}
+        const headers={'Content-Type':'application/json','Accept':'application/json'};
+        if(authenticated && $('api-key').value) headers['X-API-Key']=$('api-key').value;
+        if(userId) headers['X-User-Id']=userId;
+        const started=performance.now();
+        try {
+          const response=await fetch(`${trimBase()}/ask`,{method:'POST',headers,body:JSON.stringify({question})});
+          const elapsed=Math.round(performance.now()-started); const text=await response.text(); let body;
+          try{body=JSON.parse(text)}catch{body={detail:text.slice(0,500)}}
+          if(!quiet) showResponse(response.status,elapsed,body,body.answer||'');
+          if(response.ok && Number.isFinite(body.cost_usd)) {lastSuccessfulCost=body.cost_usd;$('last-cost').textContent=body.cost_usd.toFixed(7);$('cost-user').textContent=userId||'anonymous';$('budget-progress').style.width=Math.min(100,body.cost_usd/10*100)+'%'}
+          addEvent(`POST /ask → ${response.status}`,`${userId||'anonymous'} · ${elapsed} ms${Number.isFinite(body.history_length)?` · history ${body.history_length}`:''}`,response.ok?'ok':'bad');
+          return {status:response.status,body,elapsed};
+        } catch(err) {
+          const body={detail:`Request failed: ${err.message}`}; if(!quiet)showResponse(0,Math.round(performance.now()-started),body);
+          addEvent('POST /ask → network error',err.message,'bad'); return {status:0,body};
+        }
+      }
+      $('refresh-btn').addEventListener('click',refreshHealth);
+      $('toggle-key').addEventListener('click',()=>{const input=$('api-key');const show=input.type==='password';input.type=show?'text':'password';$('toggle-key').textContent=show?'Ẩn':'Hiện'});
+      $('ask-btn').addEventListener('click',async()=>{const b=$('ask-btn');b.disabled=true;try{await ask({authenticated:true})}finally{b.disabled=false}});
+      $('unauth-btn').addEventListener('click',async()=>{const b=$('unauth-btn');b.disabled=true;try{await ask({authenticated:false})}finally{b.disabled=false}});
+      $('rate-btn').addEventListener('click',async()=>{
+        if(!$('api-key').value){alert('Nhập API key trước. Bài test gửi request thật tới service.');return}
+        if(!confirm('Gửi tuần tự 12 request thật với user ID tạm riêng? Dự kiến 10 request HTTP 200 và 2 request HTTP 429. Các request thành công được lưu trong Redis và ghi nhận cost mô phỏng.'))return;
+        const b=$('rate-btn');b.disabled=true;b.textContent='Đang gửi request…';const userId=`demo-limit-${Date.now().toString(36)}`;let passed=0,limited=0,other=0;
+        try{for(let i=0;i<12;i++){const r=await ask({authenticated:true,userId,question:`Rate limit demo ${i+1}`,quiet:true});if(r.status===200)passed++;else if(r.status===429)limited++;else other++;} $('response-meta').textContent=`Rate test · ${passed} × 200 · ${limited} × 429 · ${other} lỗi`; $('response-content').innerHTML=`<p class="answer">User thử nghiệm: <code>${escapeHtml(userId)}</code></p><div class="metrics"><span class="metric">${passed} request được chấp nhận</span><span class="metric">${limited} request bị rate limit</span>${other?`<span class="metric">${other} request khác</span>`:''}</div><div class="note">Mỗi lần chạy dùng user ID mới để không bị quota cũ làm sai kết quả.</div>`;addEvent('Rate limit demo hoàn tất',`${passed}×200 · ${limited}×429 · user riêng`)}finally{b.disabled=false;b.textContent='Chạy demo rate limit · 12 request'}
+      });
+      $('simulate-cost-btn').addEventListener('click',()=>{const box=$('sim-result');box.style.display=box.style.display==='block'?'none':'block';addEvent('Cost guard 402', 'Đã mở mô phỏng phía trình duyệt; không gọi API')});
+      $('clear-log').addEventListener('click',()=>{events.length=0;$('event-list').innerHTML='<div class="empty">Chưa có hoạt động.</div>'});
+      $('api-base').addEventListener('change',refreshHealth);
+      refreshHealth();
+    })();
+  </script>
+</body>
+</html>
